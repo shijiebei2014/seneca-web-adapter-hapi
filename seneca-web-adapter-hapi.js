@@ -60,7 +60,12 @@ function unsecuredRoute (seneca, context, route) {
     method: route.methods,
     path: route.path,
     handler: (request, reply) => {
-      handleRoute(seneca, request, reply, route)
+      return new Promise((resolve, reject)=>{
+        handleRoute(seneca, request, function(err, result) {
+          if (err) return reject(err)
+          resolve(result)
+        }, route)
+      })
     }
   })
 }
@@ -73,7 +78,12 @@ function authRoute (seneca, context, route) {
       auth: route.auth.strategy
     },
     handler: (request, reply) => {
-      handleRoute(seneca, request, reply, route)
+      return new Promise((resolve, reject)=>{
+        handleRoute(seneca, request, function(err, result) {
+          if (err) return reject(err)
+          resolve(result)
+        }, route)
+      })
     }
   })
 }
